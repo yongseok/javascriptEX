@@ -61,9 +61,27 @@ class App extends Component {
     });
   };
 
+  dataRemoveHandler = id => {
+    const { todos } = this.state;
+    const index = todos.findIndex(todo => todo.id === id);
+
+    const newTodos = [
+      ...todos.slice(0, index),
+      ...todos.slice(index + 1, todos.length)
+    ];
+    this.setState({
+      todos: newTodos
+    });
+  };
+
   render() {
     const { input, todos } = this.state;
-    const { onChangeHandler, dataInsertHandler, toggleHandler } = this;
+    const {
+      onChangeHandler,
+      dataInsertHandler,
+      toggleHandler,
+      dataRemoveHandler
+    } = this;
 
     return (
       <PageTemplate>
@@ -72,7 +90,11 @@ class App extends Component {
           value={input}
           onInsert={dataInsertHandler}
         />
-        <TodoList todos={todos} onToggle={toggleHandler} />
+        <TodoList
+          todos={todos}
+          onToggle={toggleHandler}
+          onRemove={dataRemoveHandler}
+        />
       </PageTemplate>
     );
   }
