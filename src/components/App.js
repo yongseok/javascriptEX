@@ -42,9 +42,28 @@ class App extends Component {
     }
   };
 
+  toggleHandler = id => {
+    const { todos } = this.state;
+    const index = todos.findIndex(todo => todo.id === id);
+
+    const toggled = {
+      ...todos[index],
+      done: !todos[index].done
+    };
+
+    const newTodos = [
+      ...todos.slice(0, index),
+      toggled,
+      ...todos.slice(index + 1, todos.length)
+    ];
+    this.setState({
+      todos: newTodos
+    });
+  };
+
   render() {
     const { input, todos } = this.state;
-    const { onChangeHandler, dataInsertHandler } = this;
+    const { onChangeHandler, dataInsertHandler, toggleHandler } = this;
 
     return (
       <PageTemplate>
@@ -53,7 +72,7 @@ class App extends Component {
           value={input}
           onInsert={dataInsertHandler}
         />
-        <TodoList todos={todos} />
+        <TodoList todos={todos} onToggle={toggleHandler} />
       </PageTemplate>
     );
   }
